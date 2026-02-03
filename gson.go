@@ -1,6 +1,7 @@
 package gson
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/gospider007/tools"
@@ -48,22 +49,31 @@ func (obj *Client) Array() []*Client {
 func (obj *Client) Value() any {
 	return obj.g.Value()
 }
+func (obj *Client) Format(f fmt.State, c rune) {
+	con, _ := obj.MarshalJSON()
+	f.Write(con)
+}
 func (obj *Client) String() string {
-	v := obj.g.String()
-	if obj.g.Type == gjson.String && strings.Contains(obj.g.Raw, `\`) {
-		var v2 string
-		if strings.HasPrefix(obj.g.Raw, `"`) && strings.HasSuffix(obj.g.Raw, `"`) {
-			v2 = strings.Trim(obj.g.Raw, `"`)
-		} else if strings.HasPrefix(obj.g.Raw, `'`) && strings.HasSuffix(obj.g.Raw, `'`) {
-			v2 = strings.Trim(obj.g.Raw, `'`)
-		} else {
-			v2 = obj.g.Raw
+	switch obj.g.Type {
+	case gjson.String:
+		v := obj.g.String()
+		if strings.Contains(obj.Raw(), `\`) {
+			var v2 string
+			if strings.HasPrefix(obj.Raw(), `"`) && strings.HasSuffix(obj.Raw(), `"`) {
+				v2 = strings.Trim(obj.Raw(), `"`)
+			} else if strings.HasPrefix(obj.Raw(), `'`) && strings.HasSuffix(obj.Raw(), `'`) {
+				v2 = strings.Trim(obj.Raw(), `'`)
+			} else {
+				v2 = obj.Raw()
+			}
+			if strings.Contains(v2, v) && v != v2 {
+				return strings.ReplaceAll(v2, `\`, `、`)
+			}
 		}
-		if strings.Contains(v2, v) && v != v2 {
-			return strings.ReplaceAll(v2, `\`, `、`)
-		}
+		return v
+	default:
+		return obj.g.String()
 	}
-	return v
 }
 func (obj *Client) Bytes() []byte {
 	return tools.StringToBytes(obj.String())
@@ -149,10 +159,19 @@ func (obj *Client) ForEach(iterator func(value *Client) bool) bool {
 	return true
 }
 func (obj *Client) MarshalJSON() ([]byte, error) {
+	if obj.g.Type == gjson.String {
+		return obj.stringJson()
+	}
 	return Encode(obj.g.Value())
 }
 func (obj *Client) MarshalBSON() ([]byte, error) {
+	if obj.g.Type == gjson.String {
+		return obj.stringJson()
+	}
 	return bson.Marshal(obj.g.Value())
+}
+func (obj *Client) stringJson() ([]byte, error) {
+	return tools.StringToBytes(obj.Raw()), nil
 }
 
 func (obj *Client) Decode(val any) error {
@@ -164,6 +183,8 @@ func Encode(data any) ([]byte, error) {
 	switch value := data.(type) {
 	case []byte:
 		return value, nil
+	case string:
+		return tools.StringToBytes(value), nil
 	}
 	return jsonConfig.Marshal(data)
 }
