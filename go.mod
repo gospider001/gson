@@ -1,6 +1,6 @@
 module github.com/gospider007/gson
 
-go 1.25
+go 1.26.0
 
 require (
 	github.com/gospider007/kinds v0.0.0-20250815031133-b2282666f69c
