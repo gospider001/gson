@@ -180,12 +180,6 @@ func (obj *Client) Decode(val any) error {
 }
 
 func Encode(data any) ([]byte, error) {
-	switch value := data.(type) {
-	case []byte:
-		return value, nil
-	case string:
-		return tools.StringToBytes(value), nil
-	}
 	return jsonConfig.Marshal(data)
 }
 
