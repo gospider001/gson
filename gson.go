@@ -8,7 +8,7 @@ import (
 	jsoniter "github.com/json-iterator/go"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
-	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 var jsonConfig = jsoniter.Config{
