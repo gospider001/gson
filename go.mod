@@ -8,11 +8,11 @@ require (
 	github.com/json-iterator/go v1.1.12
 	github.com/tidwall/gjson v1.19.0
 	github.com/tidwall/sjson v1.2.5
-	go.mongodb.org/mongo-driver/v2 v2.9.0
+	go.mongodb.org/mongo-driver/v2 v2.9.1
 )
 
 require (
-	github.com/andybalholm/brotli v1.2.3 // indirect
+	github.com/andybalholm/brotli v1.2.4 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/golang/snappy v1.0.0 // indirect
 	github.com/gospider007/re v0.0.0-20260824054539-32823144d328 // indirect
