@@ -4,7 +4,7 @@ go 1.27.0
 
 require (
 	github.com/gospider007/kinds v0.0.0-20260824054539-a612e386b5ac
-	github.com/gospider007/tools v0.0.0-20260928021832-67b261236d01
+	github.com/gospider007/tools v0.0.0-20261019072851-9f938a6a38a3
 	github.com/json-iterator/go v1.1.12
 	github.com/tidwall/gjson v1.20.0
 	github.com/tidwall/sjson v1.2.5
